@@ -1,0 +1,26 @@
+{
+  "disabled": false,
+  "bindings": [
+    {
+      "name": "myQueueItem",
+      "type": "queueTrigger",
+      "direction": "in",
+      "queueName": "clone-team-request-queue",
+      "connection": "AzureWebJobsStorage"
+    },
+    {
+      "type": "token",
+      "direction": "in",
+      "name": "graphToken",
+      "resource": "https://graph.microsoft.com",
+      "identity": "ClientCredentials"
+    },
+    {
+      "type": "queue",
+      "direction": "out",
+      "name": "myOutputQueueItem",
+      "queueName": "clone-teams-completion-queue",
+      "connection": "AzureWebJobsStorage"
+    }
+  ]
+}
