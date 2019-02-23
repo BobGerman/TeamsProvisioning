@@ -31,7 +31,7 @@
           "description": "The language worker runtime to load in the function app."
         }
       },
-      "repoURL": {
+      "repoUrl": {
         "type": "string"
       },
       "branch": {
@@ -130,9 +130,9 @@
               "displayName": "Github"
             },
             "properties": {
-              "repoUrl": "[parameters('repoURL')]",
+              "RepoUrl": "[parameters('repoUrl')]",
               "branch": "[parameters('branch')]",
-              "isManualIntegration": true
+              "IsManualIntegration": true
             }
           }
         ]

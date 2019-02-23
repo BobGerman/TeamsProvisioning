@@ -6,7 +6,10 @@
         "value": "TeamsProvisioningDev"
       },
       "repoUrl": {
-        "value": "https://github.com/BobGerman/AzureSPC-FuncV2JS.git"
+        "value": "https://github.com/BobGerman/TeamsProvisioning.git"
+      },
+      "branch": {
+        "value": "dev"
       }
     }
   }
