@@ -45,7 +45,11 @@
       "applicationInsightsName": "[parameters('appName')]",
       "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'azfunctions')]",
       "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
-      "functionWorkerRuntime": "[parameters('runtime')]"
+      "functionWorkerRuntime": "[parameters('runtime')]",
+      "createRequestQueueName": "[concat('https://', variables('storageAccountName'),'.queue.core.windows.net/create-team-request-queue')]",
+      "createCompletionQueueName": "[concat('https://', variables('storageAccountName'),'.queue.core.windows.net/create-team-completion-queue')]",
+      "cloneRequestQueueName": "[concat('https://', variables('storageAccountName'),'.queue.core.windows.net/clone-team-request-queue')]",
+      "cloneCompletionQueueName": "[concat('https://', variables('storageAccountName'),'.queue.core.windows.net/clone-team-completion-queue')]"
     },
     "resources": [
       {
@@ -72,6 +76,9 @@
       {
         "apiVersion": "2015-08-01",
         "type": "Microsoft.Web/sites",
+        "identity": {
+          "type": "SystemAssigned"
+        },
         "name": "[variables('functionAppName')]",
         "location": "[parameters('location')]",
         "kind": "functionapp",
@@ -114,6 +121,22 @@
               {
                 "name": "FUNCTIONS_WORKER_RUNTIME",
                 "value": "[variables('functionWorkerRuntime')]"
+              },
+              {
+                "name": "CREATE_REQUEST_QUEUE_NAME",
+                "value": "[variables('createRequestQueueName')]"
+              },
+              {
+                "name": "CREATE_COMPLETION_QUEUE_NAME",
+                "value": "[variables('createCompletionQueueName')]"
+              },
+              {
+                "name": "CLONE_REQUEST_QUEUE_NAME",
+                "value": "[variables('cloneRequestQueueName')]"
+              },
+              {
+                "name": "CLONE_COMPLETION_QUEUE_NAME",
+                "value": "[variables('cloneCompletionQueueName')]"
               }
             ]
           }

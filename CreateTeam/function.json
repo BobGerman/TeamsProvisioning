@@ -5,7 +5,7 @@
       "name": "myQueueItem",
       "type": "queueTrigger",
       "direction": "in",
-      "queueName": "clone-team-request-queue",
+      "queueName": "create-team-request-queue",
       "connection": "AzureWebJobsStorage"
     },
     {
@@ -19,7 +19,7 @@
       "type": "queue",
       "direction": "out",
       "name": "myOutputQueueItem",
-      "queueName": "clone-team-completion-queue",
+      "queueName": "create-team-completion-queue",
       "connection": "AzureWebJobsStorage"
     }
   ]

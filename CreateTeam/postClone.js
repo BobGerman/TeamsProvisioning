@@ -1,8 +1,8 @@
 var request = require('request');
 
-// postClone() - Returns a promise to clone a Team
+// postCreate() - Returns a promise to clone a Team
 // with the provided token
-module.exports = function postClone(context, token, teamId, newTeam) {
+module.exports = function postCreate(context, token, teamId, newTeam) {
 
   return new Promise((resolve, reject) => {
 
