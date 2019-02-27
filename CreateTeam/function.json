@@ -9,13 +9,6 @@
       "connection": "AzureWebJobsStorage"
     },
     {
-      "type": "token",
-      "direction": "in",
-      "name": "graphToken",
-      "resource": "https://graph.microsoft.com",
-      "identity": "ClientCredentials"
-    },
-    {
       "type": "queue",
       "direction": "out",
       "name": "myOutputQueueItem",
