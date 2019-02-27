@@ -4,8 +4,8 @@ var request = require('request');
 const NUMBER_OF_RETRIES = 20;
 const RETRY_TIME_MSEC = 5 * 1000; // 5 sec
 
-// postClone() - Returns a promise to clone a Team and return its ID
-module.exports = function postClone(context, token, teamId, newTeam) {
+// cloneTeam() - Returns a promise to clone a Team and return its ID
+module.exports = function cloneTeam(context, token, teamId, newTeam) {
 
   return new Promise((resolve, reject) => {
 

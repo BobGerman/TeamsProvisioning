@@ -1,6 +1,6 @@
-var getTeamId = require('./getTeamId');
-var postClone = require('./postClone');
-var getToken = require('./getToken');
+const getToken = require('../Services/Token/getToken');
+const getTeamId = require('../Services/Team/getTeamId');
+const cloneTeam = require('../Services/Team/cloneTeam');
 
 module.exports = async function (context, myQueueItem) {
 
@@ -28,10 +28,10 @@ module.exports = async function (context, myQueueItem) {
                     })
                     .then((teamId) => {
                         context.log(`Got team ID ${teamId}`);
-                        return postClone(context, token, teamId, newTeam);
+                        return cloneTeam(context, token, teamId, newTeam);
                     })
                     .then((newTeamId) => {
-                        context.log(`postCreate created team ${newTeamId}`);
+                        context.log(`cloneTeam created team ${newTeamId}`);
                         context.bindings.myOutputQueueItem = [newTeamId];
                         resolve();
                     })

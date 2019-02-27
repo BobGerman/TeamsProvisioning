@@ -4,8 +4,8 @@ var request = require('request');
 const NUMBER_OF_RETRIES = 20;
 const RETRY_TIME_MSEC = 5 * 1000; // 5 sec
 
-// postCreate() - Returns a promise to create a Team and return its ID
-module.exports = function postCreate(context, token, teamId, newTeam) {
+// createTeam() - Returns a promise to create a Team and return its ID
+module.exports = function createTeam(context, token, teamId, newTeam) {
 
   return new Promise((resolve, reject) => {
 

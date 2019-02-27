@@ -1,5 +1,5 @@
 var adal = require('adal-node');
-var settings = require('./settings');
+var settings = require('../Settings/settings');
 
 // getToken() - Return promise of auth token for app
 // permission (client credentials flow)
