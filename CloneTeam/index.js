@@ -1,7 +1,10 @@
 var getTeamId = require('./getTeamId');
 var postClone = require('./postClone');
+var getToken = require('./getToken');
 
 module.exports = async function (context, myQueueItem) {
+
+    var token = "";
 
     return new Promise((resolve, reject) => {
 
@@ -17,27 +20,29 @@ module.exports = async function (context, myQueueItem) {
 
                 let token = context.bindings.graphToken;
 
-                getTeamId(context, token, oldTeam)
+                getToken(context)
+                    .then((accessToken) => {
+                        context.log(`Got access token of ${accessToken.length} characters`);
+                        token = accessToken;
+                        return getTeamId(context, token, oldTeam);
+                    })
                     .then((teamId) => {
                         context.log(`Got team ID ${teamId}`);
                         return postClone(context, token, teamId, newTeam);
                     })
-                    .then((opUrl) => {
-                        context.log('postClone resolved its promise');
-                        context.bindings.myOutputQueueItem = [opUrl, "message 3"];
+                    .then((newTeamId) => {
+                        context.log(`postCreate created team ${newTeamId}`);
+                        context.bindings.myOutputQueueItem = [newTeamId];
                         resolve();
-                        //            context.done();
                     })
                     .catch((error) => {
                         context.log(`ERROR: ${error}`);
                         reject(error);
-                        //            context.done();
                     })
 
             } catch (ex) {
                 context.log(`Error: ${ex}`);
                 reject(ex);
-                //        context.done();
             }
         } else {
             context.log('Skipping empty queue entry');

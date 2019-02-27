@@ -1,7 +1,10 @@
 var getTeamId = require('./getTeamId');
 var postCreate = require('./postCreate');
+var getToken = require('./getToken');
 
 module.exports = async function (context, myQueueItem) {
+
+    var token = "";
 
     return new Promise((resolve, reject) => {
 
@@ -13,31 +16,30 @@ module.exports = async function (context, myQueueItem) {
 
                 var oldTeam = myQueueItem.oldTeam;
                 var newTeam = myQueueItem.newTeam;
-                context.log(`Cloning ${oldTeam} to ${newTeam}`);
+                context.log(`Creating ${oldTeam} to ${newTeam}`);
 
-                let token = context.bindings.graphToken;
-
-                getTeamId(context, token, oldTeam)
-                    .then((teamId) => {
-                        context.log(`Got team ID ${teamId}`);
-                        return postCreate(context, token, teamId, newTeam);
-                    })
-                    .then((opUrl) => {
-                        context.log('postCreate resolved its promise');
-                        context.bindings.myOutputQueueItem = [opUrl, "message 3"];
-                        resolve();
-                        //            context.done();
-                    })
-                    .catch((error) => {
-                        context.log(`ERROR: ${error}`);
-                        reject(error);
-                        //            context.done();
-                    })
+                getToken(context)
+                .then ((accessToken) => {
+                    context.log(`Got access token of ${accessToken.length} characters`);
+                    token = accessToken;
+                    return getTeamId(context, token, oldTeam);
+                })
+                .then((teamId) => {
+                    return postCreate(context, token, teamId, newTeam);
+                })
+                .then((newTeamId) => {
+                    context.log(`postCreate created team ${newTeamId}`);
+                    context.bindings.myOutputQueueItem = [newTeamId];
+                    resolve();
+                })
+                .catch((error) => {
+                    context.log(`ERROR: ${error}`);
+                    reject(error);
+                });
 
             } catch (ex) {
                 context.log(`Error: ${ex}`);
                 reject(ex);
-                //        context.done();
             }
         } else {
             context.log('Skipping empty queue entry');
