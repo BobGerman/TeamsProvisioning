@@ -37,7 +37,17 @@
       "branch": {
         "type": "string",
         "defaultValue": "master"
+      },
+      "TENANT": {
+        "type": "string"
+      },
+      "CLIENT_ID": {
+        "type": "string"
+      },
+      "CLIENT_SECRET": {
+        "type": "string"
       }
+
     },
     "variables": {
       "functionAppName": "[parameters('appName')]",
@@ -137,6 +147,18 @@
               {
                 "name": "CLONE_COMPLETION_QUEUE_NAME",
                 "value": "[variables('cloneCompletionQueueName')]"
+              },
+              {
+                "name": "TENANT",
+                "value": "[parameters('TENANT')]"
+              },
+              {
+                "name": "CLIENT_ID",
+                "value": "[parameters('CLIENT_ID')]"
+              },
+              {
+                "name": "CLIENT_SECRET",
+                "value": "[parameters('CLIENT_SECRET')]"
               }
             ]
           }

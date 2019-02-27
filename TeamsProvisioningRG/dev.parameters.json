@@ -10,6 +10,15 @@
       },
       "branch": {
         "value": "dev"
+      },
+      "TENANT": {
+        "value": "a25d4ef1-c73a-4dc1-bdb1-9a342260f216"
+      },
+      "CLIENT_ID": {
+        "value": "3b34741d-68fc-4465-b25e-d6fba3de701d"
+      },
+      "CLIENT_SECRET": {
+        "value": "@Microsoft.KeyVault(SecretUri=https://teamsprovisioning.vault.azure.net/secrets/client-secret/cd56ab45a33e47bfb0b091c75b99099a)"
       }
     }
   }
