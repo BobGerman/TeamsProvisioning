@@ -1,5 +1,5 @@
 const getToken = require('../Services/Token/getToken');
-const getTeamId = require('../Services/Team/getTeamId');
+const getTemplate = require('../Services/Template/getTemplate');
 const createTeam = require('../Services/Team/createTeam');
 
 module.exports = async function (context, myQueueItem) {
@@ -10,22 +10,30 @@ module.exports = async function (context, myQueueItem) {
 
         context.log('JavaScript queue trigger function processed work item', myQueueItem);
 
-        if (myQueueItem && myQueueItem.oldTeam && myQueueItem.newTeam) {
+        if (myQueueItem && 
+            myQueueItem.emailName && 
+            myQueueItem.owners && 
+            myQueueItem.jsonTemplate) {
 
             try {
 
-                var oldTeam = myQueueItem.oldTeam;
-                var newTeam = myQueueItem.newTeam;
-                context.log(`Creating ${oldTeam} to ${newTeam}`);
+                var emailName = myQueueItem.emailName;
+                var displayName = myQueueItem.displayName || "New team";
+                var description = myQueueItem.description || "";
+                var owners = myQueueItem.owners;
+                var jsonTemplate = myQueueItem.jsonTemplate;
+
+                context.log(`Creating Team ${emailName} using ${jsonTemplate} json template`);
 
                 getToken(context)
                 .then ((accessToken) => {
                     context.log(`Got access token of ${accessToken.length} characters`);
                     token = accessToken;
-                    return getTeamId(context, token, oldTeam);
-                })
-                .then((teamId) => {
-                    return createTeam(context, token, teamId, newTeam);
+                    return getTemplate(context, token, emailName, displayName,
+                        description, owners, jsonTemplate);
+                })                  
+                .then((templateString) => {
+                    return createTeam(context, token, templateString);
                 })
                 .then((newTeamId) => {
                     context.log(`createTeam created team ${newTeamId}`);
@@ -34,15 +42,19 @@ module.exports = async function (context, myQueueItem) {
                 })
                 .catch((error) => {
                     context.log(`ERROR: ${error}`);
-                    reject(error);
+                    //reject(error);
+                    context.bindings.myOutputQueueItem = [error];
+                    resolve();
                 });
 
             } catch (ex) {
                 context.log(`Error: ${ex}`);
-                reject(ex);
+                    //reject(ex);
+                    context.bindings.myOutputQueueItem = [ex];
+                    resolve();
             }
         } else {
-            context.log('Skipping empty queue entry');
+            context.log('Skipping empty or invalid queue entry');
         }
 
     });

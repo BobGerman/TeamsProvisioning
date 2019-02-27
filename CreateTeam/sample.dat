@@ -1,1 +1,8 @@
-{"oldTeam":"labteam","newTeam":"A100"}
+{
+  "emailName": "New100",
+  "displayName": "New test team 100",
+  "description": "Testing 123",
+  "owners": ["user1", "user2"],
+  "baseTemplate": "https://graph.microsoft.com/beta/teamsTemplates/standard",
+  "jsonTemplate": "engineering"
+}

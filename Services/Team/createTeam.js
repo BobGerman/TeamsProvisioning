@@ -1,27 +1,31 @@
 var request = require('request');
+var getTemplate = require('../Template/getTemplate.js');
 
 // Retry settings for asynchronous call
 const NUMBER_OF_RETRIES = 20;
 const RETRY_TIME_MSEC = 5 * 1000; // 5 sec
 
 // createTeam() - Returns a promise to create a Team and return its ID
-module.exports = function createTeam(context, token, teamId, newTeam) {
+module.exports = function createTeam(context, token, templateString) {
 
   return new Promise((resolve, reject) => {
 
-    const url = `https://graph.microsoft.com/beta/teams/${teamId}/clone`;
-
-    context.log(`Cloning team with this URL ${url}`)
+    const url = `https://graph.microsoft.com/beta/teams`;
+    const testTemplateString = `
+    {
+      "template@odata.bind": "https://graph.microsoft.com/beta/teamsTemplates/standard",
+      "displayName": "My Sample Team",
+      "description": "My Sample Team’s Description",
+      "owners@odata.bind": [
+        "https://graph.microsoft.com/beta/users('bob@bgtest18.onmicrosoft.com')"
+      ],
+      "visibility": "public"
+    }
+    `;
     request.post(url, {
       'auth': { 'bearer': token },
       'headers': { 'Content-Type': 'application/json' },
-      'body': JSON.stringify({
-        "displayName": newTeam,
-        "description": "Test cloning via graph API 2",
-        "mailNickname": newTeam,
-        "partsToClone": "apps,tabs,settings,channels,members",
-        "visibility": "public"
-      })
+      'body': testTemplateString
     }, (error, response, body) => {
 
       context.log(`Received a response with status code ${response.statusCode} error=${error}`);
@@ -50,6 +54,8 @@ module.exports = function createTeam(context, token, teamId, newTeam) {
 
       }
     });
+
+
   });
 
   function pollUntilDone(resolve, reject, opUrl, token, retryCount) {
@@ -76,7 +82,7 @@ module.exports = function createTeam(context, token, teamId, newTeam) {
             // Not success - try again after waiting a few seconds
             console.log(`Received status ${result.status}`);
             setTimeout(() => {
-              pollUntilDone(resolve, reject, opUrl, token, retryCount-1);
+              pollUntilDone(resolve, reject, opUrl, token, retryCount - 1);
             }, RETRY_TIME_MSEC);
           }
         } else if (error) {
