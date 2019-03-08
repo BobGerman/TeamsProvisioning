@@ -6,26 +6,16 @@ const NUMBER_OF_RETRIES = 20;
 const RETRY_TIME_MSEC = 5 * 1000; // 5 sec
 
 // createTeam() - Returns a promise to create a Team and return its ID
-module.exports = function createTeam(context, token, templateString) {
+module.exports = function createTeam(context, token, templateString, owners) {
 
   return new Promise((resolve, reject) => {
 
     const url = `https://graph.microsoft.com/beta/teams`;
-    const testTemplateString = `
-    {
-      "template@odata.bind": "https://graph.microsoft.com/beta/teamsTemplates/standard",
-      "displayName": "My Sample Team",
-      "description": "My Sample Team’s Description",
-      "owners@odata.bind": [
-        "https://graph.microsoft.com/beta/users('bob@bgtest18.onmicrosoft.com')"
-      ],
-      "visibility": "public"
-    }
-    `;
+
     request.post(url, {
       'auth': { 'bearer': token },
       'headers': { 'Content-Type': 'application/json' },
-      'body': testTemplateString
+      'body': templateString
     }, (error, response, body) => {
 
       context.log(`Received a response with status code ${response.statusCode} error=${error}`);

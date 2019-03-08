@@ -11,29 +11,28 @@ module.exports = async function (context, myQueueItem) {
         context.log('JavaScript queue trigger function processed work item', myQueueItem);
 
         if (myQueueItem && 
-            myQueueItem.emailName && 
+            myQueueItem.displayName &&
             myQueueItem.owners && 
             myQueueItem.jsonTemplate) {
 
             try {
 
-                var emailName = myQueueItem.emailName;
                 var displayName = myQueueItem.displayName || "New team";
                 var description = myQueueItem.description || "";
                 var owners = myQueueItem.owners;
                 var jsonTemplate = myQueueItem.jsonTemplate;
 
-                context.log(`Creating Team ${emailName} using ${jsonTemplate} json template`);
+                context.log(`Creating Team ${displayName} using ${jsonTemplate} json template`);
 
                 getToken(context)
                 .then ((accessToken) => {
                     context.log(`Got access token of ${accessToken.length} characters`);
                     token = accessToken;
-                    return getTemplate(context, token, emailName, displayName,
-                        description, owners, jsonTemplate);
-                })                  
+                    return getTemplate(context, token, jsonTemplate,
+                        displayName, description, owners[0]);
+                })
                 .then((templateString) => {
-                    return createTeam(context, token, templateString);
+                    return createTeam(context, token, templateString, owners);
                 })
                 .then((newTeamId) => {
                     context.log(`createTeam created team ${newTeamId}`);

@@ -1,8 +1,8 @@
 var request = require('request');
 
-// getTemplate() - Return promise of Team ID with the specified name
-module.exports = function getTemplate(context, token, emailName, displayName,
-    description, owners, jsonTemplate) {
+// getTemplate() - Return a template used to create a Team
+module.exports = function getTemplate(context, token, jsonTemplate,
+    displayName, description, owner) {
 
     context.log('Getting template ' + jsonTemplate);
 
@@ -10,11 +10,11 @@ module.exports = function getTemplate(context, token, emailName, displayName,
 
         const template = `
         {
-            "template@odata.bind": "https://graph.microsoft.com/beta/teamsTemplates/standard",
+            "template@odata.bind": "https://graph.microsoft.com/beta/teamsTemplates('standard')",
             "displayName": "${displayName}",
             "description": "${description}",
             "owners@odata.bind": [
-                "https://graph.microsoft.com/beta/users('${owners[0]}')"
+                "https://graph.microsoft.com/beta/users('${owner}')"
             ],
             "visibility": "Private",
             "channels": [
