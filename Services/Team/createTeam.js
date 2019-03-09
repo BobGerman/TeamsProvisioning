@@ -1,5 +1,4 @@
 var request = require('request');
-var getTemplate = require('../Template/getTemplate.js');
 
 // Retry settings for asynchronous call
 const NUMBER_OF_RETRIES = 20;

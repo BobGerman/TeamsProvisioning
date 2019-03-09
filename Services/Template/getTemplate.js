@@ -2,6 +2,7 @@ var getSiteId = require('./getSiteId');
 var getDriveId = require('./getDriveId');
 var getDownloadUrl = require('./getDownloadUrl');
 var downloadDriveItem = require('./downloadDriveItem');
+var addPropertiesToTemplate = require('./addPropertiesToTemplate');
 var settings = require('../Settings/settings');
 
 module.exports = function getTemplate(context, token, jsonTemplate,
@@ -25,7 +26,15 @@ module.exports = function getTemplate(context, token, jsonTemplate,
             return (downloadDriveItem(context, token, downloadUrl));
         })
         .then((templateString) => {
-            resolve(templateString);
+            templateString = templateString.trimLeft();
+            const result = addPropertiesToTemplate(templateString, [
+                { name: 'displayName', value: displayName },
+                { name: 'description', value: description },
+                { name: 'owners@odata.bind', value: [
+                    `https://graph.microsoft.com/beta/users('${owner}')`
+                ]}
+            ]);
+            resolve(result);
         })
         .catch((ex) => {
             reject(`Error in getTemplate(): ${ex}`);
