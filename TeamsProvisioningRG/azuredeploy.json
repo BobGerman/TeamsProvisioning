@@ -41,13 +41,21 @@
       "TENANT": {
         "type": "string"
       },
+      "TENANT_NAME": {
+        "type": "string"
+      },
       "CLIENT_ID": {
         "type": "string"
       },
       "CLIENT_SECRET": {
         "type": "string"
+      },
+      "TEMPLATE_SITE_URL": {
+        "type": "string"
+      },
+      "TEMPLATE_LIB_NAME": {
+        "type": "string"
       }
-
     },
     "variables": {
       "functionAppName": "[parameters('appName')]",
@@ -153,12 +161,24 @@
                 "value": "[parameters('TENANT')]"
               },
               {
+                "name": "TENANT_NAME",
+                "value": "[parameters('TENANT_NAME')]"
+              },
+              {
                 "name": "CLIENT_ID",
                 "value": "[parameters('CLIENT_ID')]"
               },
               {
                 "name": "CLIENT_SECRET",
                 "value": "[parameters('CLIENT_SECRET')]"
+              },
+              {
+                "name": "TEMPLATE_SITE_URL",
+                "value": "[parameters('TEMPLATE_SITE_URL')]"
+              },
+              {
+                "name": "TEMPLATE_LIB_NAME",
+                "value": "[parameters('TEMPLATE_LIB_NAME')]"
               }
             ]
           }

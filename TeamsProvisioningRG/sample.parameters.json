@@ -1,0 +1,34 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "appName": {
+        "value": "(your app name)"
+      },
+      "repoUrl": {
+        "value": "(your github repo URL like https://github.com/BobGerman/TeamsProvisioning.git)"
+      },
+      "branch": {
+        "value": "(your github branch like master"
+      },
+      "TENANT": {
+        "value": "(your tenant ID)"
+      },
+      "TENANT_NAME": {
+        "value": "(your tenant name without .onmicrosoft.com)"
+      },
+      "CLIENT_ID": {
+        "value": "(your Azure AD v1 app id with app permissions)"
+      },
+      "CLIENT_SECRET": {
+        "value": "@Microsoft.KeyVault(SecretUri=(url of your keyvault secret))"
+      },
+      "TEMPLATE_SITE_URL": {
+        "value": "(your SharePoint site for holding templates like /sites/TeamsProvisioning)"
+      },
+      "TEMPLATE_LIB_NAME": {
+        "value": "(your SharePoint document library for templates like Templates)"
+      }
+    }
+  }
+  

@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "appName": {
-        "value": "TeamsProvisioningDev"
+        "value": "TeamsProvisioningProd"
       },
       "repoUrl": {
         "value": "https://github.com/BobGerman/TeamsProvisioning.git"
       },
       "branch": {
-        "value": "dev"
+        "value": "prod"
       },
       "TENANT": {
         "value": "a25d4ef1-c73a-4dc1-bdb1-9a342260f216"
@@ -27,7 +27,7 @@
         "value": "/sites/TeamsProvisioning"
       },
       "TEMPLATE_LIB_NAME": {
-        "value": "templates"
+        "value": "Templates"
       }
     }
   }
