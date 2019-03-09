@@ -1,0 +1,15 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+      "AzureWebJobsStorage": "(your storage account connection string like DefaultEndpointsProtocol=https;AccountName=...)",
+      "FUNCTIONS_WORKER_RUNTIME": "node",
+      "AUTH_URL": "https://login.microsoftonline.com/",
+      "GRAPH_URL": "https://graph.microsoft.com/",
+      "TENANT": "(your tenant ID)",
+      "TENANT_NAME": "(your tenant name without the .onmicrosoft.com",
+      "CLIENT_ID": "(ID of Azure AD v1 app with app permissions)",
+      "CLIENT_SECRET": "(app key for Azure AD v1 app)",
+      "TEMPLATE_SITE_URL": "/sites/(name of site with templates)",
+      "TEMPLATE_LIB_NAME": "(name of library with templates)"
+    }
+  }

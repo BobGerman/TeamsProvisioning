@@ -9,7 +9,7 @@ module.exports = function getTeamId(context, token, teamName) {
 
         const url = `https://graph.microsoft.com/beta/groups` +
                         `?$filter=(resourceProvisioningOptions/Any(x:x eq 'Team')) ` +
-                        ` and mailNickname eq '${teamName}'`
+                        ` and mailNickname eq '${teamName}'`;
         try {
 
             request.get(url, {
@@ -18,8 +18,6 @@ module.exports = function getTeamId(context, token, teamName) {
                 }
             }, (error, response, body) => {
 
-                context.log('Received response ' + response.statusCode);
-
                 if (!error && response && response.statusCode == 200) {
 
                     // If here we have all the lists
@@ -27,17 +25,14 @@ module.exports = function getTeamId(context, token, teamName) {
                     if (result.value && result.value[0]) {
                         resolve(result.value[0].id);
                     } else {
-                        reject("Team not found");
+                        reject("Team not found in getTeamId");
                     }
                 } else {
                     if (error) {
-                        context.log('Received error ' + error);
-                        reject(error);
+                        reject(`Error in getTeamId: ${error}`);
                     } else {
                         let b = JSON.parse(response.body);
-                        context.log('Received error ' + error);
-
-                        reject(`${b.error.code} - ${b.error.message} - ${token}`);
+                        reject(`Error ${b.error.code} in getTeamId: ${b.error.message}`);
                     }
                 }
 
@@ -47,7 +42,7 @@ module.exports = function getTeamId(context, token, teamName) {
 
         }
         catch (ex) {
-            context.log('Error ' + ex);
+            context.log(`Error in getTeamId: ${ex}`);
         }
 
     });
