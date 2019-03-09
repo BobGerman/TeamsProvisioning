@@ -13,12 +13,9 @@ module.exports = async function (context, myQueueItem) {
         if (myQueueItem && myQueueItem.oldTeam && myQueueItem.newTeam) {
 
             try {
-
                 var oldTeam = myQueueItem.oldTeam;
                 var newTeam = myQueueItem.newTeam;
                 context.log(`Cloning ${oldTeam} to ${newTeam}`);
-
-                let token = context.bindings.graphToken;
 
                 getToken(context)
                     .then((accessToken) => {
@@ -32,17 +29,31 @@ module.exports = async function (context, myQueueItem) {
                     })
                     .then((newTeamId) => {
                         context.log(`cloneTeam created team ${newTeamId}`);
-                        context.bindings.myOutputQueueItem = [newTeamId];
+                        context.bindings.myOutputQueueItem = {
+                            success: true,
+                            teamId: newTeamId,
+                            error: ''
+                        };
                         resolve();
                     })
                     .catch((error) => {
                         context.log(`ERROR: ${error}`);
-                        reject(error);
+                        context.bindings.myOutputQueueItem = {
+                            success: false,
+                            teamId: '',
+                            error: error
+                        };
+                        resolve();
                     })
 
             } catch (ex) {
-                context.log(`Error: ${ex}`);
-                reject(ex);
+                context.log(`ERROR: ${error}`);
+                context.bindings.myOutputQueueItem = {
+                    success: false,
+                    teamId: '',
+                    error: error
+                };
+                resolve();
             }
         } else {
             context.log('Skipping empty queue entry');
