@@ -36,21 +36,31 @@ module.exports = async function (context, myQueueItem) {
                 })
                 .then((newTeamId) => {
                     context.log(`createTeam created team ${newTeamId}`);
-                    context.bindings.myOutputQueueItem = [newTeamId];
+                    context.bindings.myOutputQueueItem = {
+                        success: true,
+                        teamId: newTeamId,
+                        error: ''
+                    };
                     resolve();
                 })
                 .catch((error) => {
                     context.log(`ERROR: ${error}`);
-                    //reject(error);
-                    context.bindings.myOutputQueueItem = [error];
+                    context.bindings.myOutputQueueItem = {
+                        success: false,
+                        teamId: '',
+                        error: error
+                    };
                     resolve();
                 });
 
             } catch (ex) {
                 context.log(`Error: ${ex}`);
-                    //reject(ex);
-                    context.bindings.myOutputQueueItem = [ex];
-                    resolve();
+                context.bindings.myOutputQueueItem = {
+                    success: false,
+                    teamId: '',
+                    error: ex
+                };
+                resolve();
             }
         } else {
             context.log('Skipping empty or invalid queue entry');
