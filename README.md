@@ -14,7 +14,6 @@ Rough steps are:
 
 * Run Connect-AzureRmService, and then the Install command you just edited
 
-
 * Back in KeyVault, grant the new app permission to Get and List secrets
 
 * Find the storage account and get the queues, and wire them to a Flow
