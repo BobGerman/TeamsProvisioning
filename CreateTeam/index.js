@@ -1,6 +1,8 @@
+const settings = require('../Services/Settings/settings');
 const getToken = require('../Services/Token/getToken');
 const getTemplate = require('../Services/Template/getTemplate');
 const createTeam = require('../Services/Team/createTeam');
+const getChannelId = require('../Services/Team/getChannelId');
 
 module.exports = async function (context, myQueueItem) {
 
@@ -17,10 +19,11 @@ module.exports = async function (context, myQueueItem) {
 
             try {
 
-                var displayName = myQueueItem.displayName || "New team";
-                var description = myQueueItem.description || "";
-                var owners = myQueueItem.owners;
-                var jsonTemplate = myQueueItem.jsonTemplate;
+                const displayName = myQueueItem.displayName || "New team";
+                const description = myQueueItem.description || "";
+                const owners = myQueueItem.owners;
+                const jsonTemplate = myQueueItem.jsonTemplate;
+                var newTeamId;
 
                 context.log(`Creating Team ${displayName} using ${jsonTemplate} json template`);
 
@@ -34,11 +37,19 @@ module.exports = async function (context, myQueueItem) {
                 .then((templateString) => {
                     return createTeam(context, token, templateString, owners);
                 })
-                .then((newTeamId) => {
+                .then((teamId) => {
+                    newTeamId = teamId;
                     context.log(`createTeam created team ${newTeamId}`);
+                    return getChannelId(context, token, newTeamId, "General");
+                })
+                .then((channelId) => {
                     context.bindings.myOutputQueueItem = {
                         success: true,
                         teamId: newTeamId,
+                        teamUrl: `https://teams.microsoft.com/l/team/${channelId}/conversations?groupId=${newTeamId}&tenantId=${settings().TENANT}`,
+                        teamName: displayName,
+                        teamDescription: description,
+                        owner: owners[0],
                         error: ''
                     };
                     resolve();
@@ -48,6 +59,10 @@ module.exports = async function (context, myQueueItem) {
                     context.bindings.myOutputQueueItem = {
                         success: false,
                         teamId: '',
+                        teamUrl: '',
+                        teamName: displayName,
+                        teamDescription: description,
+                        owner: owners[0],
                         error: error
                     };
                     resolve();
@@ -58,6 +73,10 @@ module.exports = async function (context, myQueueItem) {
                 context.bindings.myOutputQueueItem = {
                     success: false,
                     teamId: '',
+                    teamUrl: '',
+                    teamName: displayName,
+                    teamDescription: description,
+                    owner: owners[0],
                     error: ex
                 };
                 resolve();

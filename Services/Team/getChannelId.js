@@ -1,15 +1,11 @@
 var request = require('request');
 
-// getTeamId() - Return promise of Team ID with the specified name
-module.exports = function getTeamId(context, token, teamName) {
-
-    context.log('Getting team ID for ' + teamName);
+// getChannelId() - Return promise of Channel ID with the specified name
+module.exports = function getChannelId(context, token, teamId, channelName) {
 
     return new Promise((resolve, reject) => {
 
-        const url = `https://graph.microsoft.com/beta/groups` +
-                        `?$filter=(resourceProvisioningOptions/Any(x:x eq 'Team')) ` +
-                        ` and mailNickname eq '${teamName}'`;
+        const url = `https://graph.microsoft.com/beta/teams/${teamId}/channels?$filter=displayName+eq+'${channelName}'`;
         try {
 
             request.get(url, {
@@ -24,24 +20,22 @@ module.exports = function getTeamId(context, token, teamName) {
                     if (result.value && result.value[0]) {
                         resolve(result.value[0].id);
                     } else {
-                        reject("Team not found in getTeamId");
+                        reject("Channel not found in getChannelId");
                     }
                 } else {
                     if (error) {
-                        reject(`Error in getTeamId: ${error}`);
+                        reject(`Error in getChannelId: ${error}`);
                     } else {
                         let b = JSON.parse(response.body);
-                        reject(`Error ${b.error.code} in getTeamId: ${b.error.message}`);
+                        reject(`Error ${b.error.code} in getChannelId: ${b.error.message}`);
                     }
                 }
 
             });
 
-            context.log('Requested ' + url);
-
         }
         catch (ex) {
-            context.log(`Error in getTeamId: ${ex}`);
+            context.log(`Error in getChannelId: ${ex}`);
         }
 
     });
