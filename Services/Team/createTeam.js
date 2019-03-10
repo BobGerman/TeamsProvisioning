@@ -18,8 +18,6 @@ module.exports = function createTeam(context, token, templateString, owners) {
     }, (error, response, body) => {
 
       context.log(`Received a response with status code ${response.statusCode} error=${error}`);
-      context.log(`Response ${response}`);
-      context.log(`boolean ${(response && response.statusCode == 202)}`);
 
       if (response && response.statusCode == 202) {
 

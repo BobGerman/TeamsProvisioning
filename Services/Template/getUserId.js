@@ -4,37 +4,45 @@ module.exports = function getUserId(context, token, userPrincipalName) {
 
     return new Promise((resolve, reject) => {
 
-        const url = `https://graph.microsoft.com/v1.0/users/${userPrincipalName}`;
-        try {
+        if (userPrincipalName.indexOf('@') < 0) {
 
-            request.get(url, {
-                'auth': {
-                    'bearer': token
-                }
-            }, (error, response, body) => {
+            // If there's no @ sign, assume this is already a GUID
+            resolve(userPrincipalName);
+            
+        } else {
 
-                if (!error && response && response.statusCode == 200) {
+            const url = `https://graph.microsoft.com/v1.0/users/${userPrincipalName}`;
+            try {
 
-                    const result = JSON.parse(response.body);
-                    if (result.id) {
-                        resolve(result.id);
-                    } else {
-                        reject(`User not found: ${userPrincipalName}`);
+                request.get(url, {
+                    'auth': {
+                        'bearer': token
                     }
+                }, (error, response, body) => {
 
-                } else {
+                    if (!error && response && response.statusCode == 200) {
 
-                    if (error) {
-                        reject(`Error in getUserId: ${error}`);
+                        const result = JSON.parse(response.body);
+                        if (result.id) {
+                            resolve(result.id);
+                        } else {
+                            reject(`User not found: ${userPrincipalName}`);
+                        }
+
                     } else {
-                        let b = JSON.parse(response.body);
-                        reject(`Error ${b.error.code} in getUserId: ${b.error.message}`);
-                    }
 
-                }
-            });
-        } catch (ex) {
-            reject(`Error in getUserId: ${ex}`);
+                        if (error) {
+                            reject(`Error in getUserId: ${error}`);
+                        } else {
+                            let b = JSON.parse(response.body);
+                            reject(`Error ${b.error.code} in getUserId: ${b.error.message}`);
+                        }
+
+                    }
+                });
+            } catch (ex) {
+                reject(`Error in getUserId: ${ex}`);
+            }
         }
     });
 }

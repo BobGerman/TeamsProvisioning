@@ -34,15 +34,7 @@ module.exports = function getTemplate(context, token, jsonTemplate,
 
         // 5. Parse the template; get owner's user ID
             template = JSON.parse(templateString.trimLeft());
-            if (owner.indexOf('@') > 1) {
-                // We have an email address, convert to an ID
-                return getUserId (context, token, owner);
-            } else {
-                // Let's hope we already have an ID
-                return new Promise((resolve) => {
-                    resolve(owner);
-                });
-            }
+            return getUserId (context, token, owner);
         })
         .then((ownerId) => {
         // 6. Add the per-team properties to the template
