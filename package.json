@@ -1,0 +1,24 @@
+{
+  "name": "teamsprovisioning",
+  "version": "1.0.0",
+  "description": "Azure Function App for Teams provisioning",
+  "main": "index.js",
+  "dependencies": {
+    "adal-node": "^0.1.28",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BobGerman/TeamsProvisioning.git"
+  },
+  "author": "Bob German",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BobGerman/TeamsProvisioning/issues"
+  },
+  "homepage": "https://github.com/BobGerman/TeamsProvisioning#readme"
+}
