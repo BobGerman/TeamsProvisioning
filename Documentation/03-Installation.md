@@ -1,6 +1,6 @@
 # Teams Provisioning Sample
 
-## Part 4: Installing the Azure Functions
+## Part 3: Installing the Azure Functions
 
 Rough steps are:
 

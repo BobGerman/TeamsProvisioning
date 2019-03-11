@@ -1,4 +1,4 @@
 # Teams Provisioning Sample
 
-## Part 3: Architecture
+## Part 2: Architecture
 

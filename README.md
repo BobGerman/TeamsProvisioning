@@ -6,15 +6,13 @@ This repository contains a set of Azure Functions for Microsoft Teams provisioni
 
 The documentation is organized as follows:
 
-1. [Why Provisioning is important](./Documents/01-Provisioning.md)
+1. [Provisioning and Teams Templates](./Documents/01-TeamsTemplates.md)
 
-1. [Overview of Teams Templates (all 3 kinds)](./Documents/02-TeamsTemplates.md)
+1. [Architecture](./Documents/02-Architecture.md)
 
-1. [Architecture](./Documents/03-Architecture.md)
+1. [Installing the Functions](./Documents/03-Installation.md)
 
-1. [Installing the Functions](./Documents/Installation.md)
-
-1. [Writing a Teams provisioning Flow](./Documents/BuildingFlow.md)
+1. [Writing a Teams provisioning Flow](./Documents/04-BuildingFlow.md)
 
 ## Prerequisites
 
