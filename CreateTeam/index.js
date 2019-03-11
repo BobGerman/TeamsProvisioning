@@ -14,14 +14,15 @@ module.exports = async function (context, myQueueItem) {
 
         if (myQueueItem && 
             myQueueItem.displayName &&
-            myQueueItem.owners && 
+            myQueueItem.owner && 
             myQueueItem.jsonTemplate) {
 
             try {
 
                 const displayName = myQueueItem.displayName || "New team";
                 const description = myQueueItem.description || "";
-                const owners = myQueueItem.owners;
+                const owner = myQueueItem.owner;
+                const requestId = myQueueItem.requestId || "";
                 const jsonTemplate = myQueueItem.jsonTemplate;
                 var newTeamId;
 
@@ -32,10 +33,10 @@ module.exports = async function (context, myQueueItem) {
                     context.log(`Got access token of ${accessToken.length} characters`);
                     token = accessToken;
                     return getTemplate(context, token, jsonTemplate,
-                        displayName, description, owners[0]);
+                        displayName, description, owner);
                 })
                 .then((templateString) => {
-                    return createTeam(context, token, templateString, owners);
+                    return createTeam(context, token, templateString);
                 })
                 .then((teamId) => {
                     newTeamId = teamId;
@@ -45,11 +46,12 @@ module.exports = async function (context, myQueueItem) {
                 .then((channelId) => {
                     context.bindings.myOutputQueueItem = {
                         success: true,
+                        requestId: requestId,
                         teamId: newTeamId,
                         teamUrl: `https://teams.microsoft.com/l/team/${channelId}/conversations?groupId=${newTeamId}&tenantId=${settings().TENANT}`,
                         teamName: displayName,
                         teamDescription: description,
-                        owner: owners[0],
+                        owner: owner,
                         error: ''
                     };
                     resolve();
@@ -58,11 +60,12 @@ module.exports = async function (context, myQueueItem) {
                     context.log(`ERROR: ${error}`);
                     context.bindings.myOutputQueueItem = {
                         success: false,
+                        requestId: requestId,
                         teamId: '',
                         teamUrl: '',
                         teamName: displayName,
                         teamDescription: description,
-                        owner: owners[0],
+                        owner: owner,
                         error: error
                     };
                     resolve();
@@ -72,11 +75,12 @@ module.exports = async function (context, myQueueItem) {
                 context.log(`Error: ${ex}`);
                 context.bindings.myOutputQueueItem = {
                     success: false,
+                    requestId: requestId,
                     teamId: '',
                     teamUrl: '',
                     teamName: displayName,
                     teamDescription: description,
-                    owner: owners[0],
+                    owner: owner,
                     error: ex
                 };
                 resolve();
