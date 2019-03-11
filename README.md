@@ -1,19 +1,44 @@
-# TeamsProvisioning
+# TeamsProvisioning Sample
 
-## Installation
+This repository contains a set of Azure Functions for Microsoft Teams provisioning. They're designed to work in concert with Microsoft Flow or Logic Apps to handle the business process, and to create Teams based on "templates" (JSON files) stored in SharePoint. Given these tools, a Microsoft partner or customer can create a scalable Teams provisioning solution tailored to their needs.
 
-Rough steps are:
+![Solution Architecture](./Documentation/images/SolutionArchitecture.png)
 
- * Register an app and give it Group.ReadWrite.All app permissions. Generate a key.
+The documentation is organized as follows:
 
- * Create a Key Vault and add the key
+1. [Why Provisioning is important](./Documents/01-Provisioning.md)
 
- * In the TeamsProvisioningRG folder, create a parameters.json file for your target environment
+1. [Overview of Teams Templates (all 3 kinds)](./Documents/02-TeamsTemplates.md)
 
-* Edit and adapt one of the InstallDev.ps1 or InstallProd.ps1 with your parameter file name and desired geography
+1. [Architecture](./Documents/03-Architecture.md)
 
-* Run Connect-AzureRmService, and then the Install command you just edited
+1. [Installing the Functions](./Documents/Installation.md)
 
-* Back in KeyVault, grant the new app permission to Get and List secrets
+1. [Writing a Teams provisioning Flow](./Documents/BuildingFlow.md)
 
-* Find the storage account and get the queues, and wire them to a Flow
+## Prerequisites
+
+To set up the solution, you will need to be a full administrator of:
+
+* Office 365 Tenant and associated Azure AD
+* Microsoft Azure subscription associated with the same Azure AD directory as the Office 365 Tenant
+* Computer running PowerShell 5.x and [AzureRM PowerShell](https://docs.microsoft.com/en-us/powershell/azure/azurerm/install-azurerm-ps)
+
+## Solution
+
+Solution|Author(s)
+--------|---------
+Teams Provisioning Sample | Bob German, Microsoft [@Bob1German](https://twitter.com/bob1german)
+
+## Version history
+
+Version|Date|Comments
+-------|----|--------
+1.0|March 12, 2019|Initial release
+
+## Disclaimer
+**THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
+
+---
+
+
