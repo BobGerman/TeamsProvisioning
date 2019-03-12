@@ -9,7 +9,6 @@ module.exports = function getSiteId(context, token, tenantName,
             `${tenantName}.sharepoint.com:${serverRelativeUrl}`;
         try {
 
-            console.log('Getting site ID ' + url);
             request.get(url, {
                 'auth': {
                     'bearer': token
