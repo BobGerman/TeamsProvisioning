@@ -56,7 +56,7 @@ module.exports = function createTeam(context, token, templateString) {
         }
       }, (error, response, body) => {
 
-        context.log('Received response ' + response.statusCode);
+        context.log('Received response ' + response.statusCode + ' error ' + error);
 
         if (!error && response && response.statusCode == 200) {
 
