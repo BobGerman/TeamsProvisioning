@@ -15,9 +15,9 @@ Save this information for future steps:
 
 ### 2. Create your Templates library
 
-Determine what SharePoint site and library you want to use to store your JSON template files. This doesn't have to be fancy, but the code expects the JSON template files to be at the root of the library. Copy in the sample JSON template files from the Documentation/Samples directory into the library. Notice that the file names end in .json.txt; this is because SharePoint doesn't normally allow .json files. 
+Determine what SharePoint site and library you want to use to store your JSON template files. This doesn't have to be fancy, but the code expects the JSON template files to be at the root of the library. Copy in the sample JSON template files from the Documentation/Samples directory into the library. Notice that the file names end in .json.txt; this is because SharePoint doesn't allow .json files. 
 
-Save these values for future steps:
+Save this information for future steps:
 
 * The SharePoint site URL
 * The SharePoint library name
@@ -50,11 +50,11 @@ NOTE: You may want separate applications for dev, staging, and production, etc. 
 
 ### 4. Set up Key Vault
 
-The application key is supposed to really be secret! So store it safely away from prying eyes in Azure KeyVault. 
+The application key is supposed to really be secret! So store it safely away from prying eyes in Azure Key Vault. 
 
-In the Azure portal under Key Vaults, click + to add a new key vault. Give it a name, location, and resource group. For best results, choose the same location that you plan to host the Azure functions in! However you probably shouldn't use the same resource group; you may want to delete resource groups occasionally. (Knowing they're easy to set up, at times you may want to delete the Resource Group for your Azure Function Apps). You probably don't want to lose your KeyVault in this case.)
+In the Azure portal under Key Vaults, click + to add a new key vault. Give it a name, location, and resource group. For best results, choose the same location that you plan to host the Azure functions in! However you probably shouldn't use the same resource group; you may want to delete the resource group(s) containing your Azure Function app and still reuse the app registration and its secret key stored in Key Vault.
 
-In your new KeyVault, click Secrets and + to add a new one. Give the secret a name and paste in the Application Key from the previous step.
+In your new Key Vault, click Secrets and + to add a new one. Give the secret a name and paste in the Application Key from the previous step.
 
 Within your new Secret, copy the current version's Secret Identifier.
 
@@ -83,15 +83,15 @@ Fill in the following values in the parameters file:
 * TEMPLATE_SITE_URL: The server-relative URL of the SharePoint site containing your JSON templates such as /sites/myProvisioningSite
 * TEMPLATE_LIB_NAME: The name of the SharePoint library holding the JSON templates
 
-Notice that this parameters file gives you the ability to use different app identities, Key Vaults, and SharePoint libraries in each environment if you so choose.
+Notice that the parameters file gives you the ability to use different app identities, Key Vaults, and SharePoint libraries in each environment if you so choose.
 
 ### 6. Create installation script
 
-Edit and adapt one of the provided installation scripts (InstallDev.ps1 or InstallProd.ps1)  with your desired resource group name, resource group location, and parameter file name.
+Edit and adapt one of the provided installation scripts (InstallDev.ps1 or InstallProd.ps1) with your desired resource group name, resource group location, and parameter file name.
 
 ### 7. Install the Resource Group with Function App
 
-Ensure Azure PowerShell is installed. Run Connect-AzureRmService to connect to Azure, and then the Install command you just edited. The script should create:
+Ensure [Azure PowerShell](https://docs.microsoft.com/en-us/powershell/azure/azurerm/overview?view=azurermps-6.13.0) is installed. Run Connect-AzureRmService to connect to Azure, and then the Install command you just edited. The script should create:
 
 * A resource group for your solution
 * An Azure Function App set up with github deployment (it should build itself initially, thus creating the CreateTeam and CloneTeam functions)
@@ -110,9 +110,14 @@ In the Azure Portal under Storage Accounts, find the storage account for your en
 
 ![Storage Account](./images/Install-009-0-GetStorageAccountInfo.png)
 
+Save this information for future steps:
+
+* Storage account name
+* Storage account shared key
+
 ### Test your solution
 
-Now you can test your solution without Flow, and it's a good idea to do so!
+You can test your solution without Flow, and it's a good idea to do so before proceeding!
 
 Still in your storage account, click Overview and then Queues to view your storage queues. You should see four of them.
 

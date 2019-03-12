@@ -6,11 +6,13 @@ This repository contains a set of Azure Functions for Microsoft Teams provisioni
 
 The documentation is organized as follows:
 
-1. [Solution Overview](./Documents/01-Overview.md)
+1. [Solution Overview](./Documentation/01-Overview.md)
 
-1. [Installing the Functions](./Documents/02-Installation.md)
+1. [Installing the Functions](./Documentation/02-Installation.md)
 
-1. [Writing a Teams provisioning Flow](./Documents/03-BuildingFlow.md)
+1. [Writing a Teams provisioning Flow](./Documentation/03-BuildingFlow.md)
+
+1. [Learn from the code](./Documentation/04-Learning.md)
 
 ## Prerequisites
 

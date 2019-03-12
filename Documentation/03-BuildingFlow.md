@@ -58,3 +58,5 @@ Create the Flow with a "When there are messages in a queue" trigger. Then add a 
 ~~~
 
 This should give you all the information you need to inform the user of success or inform an IT admin about any errors. 
+
+NOTE: At the end of your flow, use the Delete Message action on the Azure Queue to delete the message you just processed; otherwise your Flow may run again and again processing the same completion!

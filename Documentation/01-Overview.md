@@ -16,13 +16,13 @@ Microsoft Teams provides two main ways to do this:
 
 1. Teams can be created using the Graph API, which provides a very nice [Create team](https://docs.microsoft.com/en-us/graph/api/team-put-teams) call that allows passing in almost every detail of a Team including channels, tabs, and applications. ([This call was in beta](https://docs.microsoft.com/en-us/graph/api/team-post?view=graph-rest-beta) at the time of this writing). This has the advantage that the JSON can be versioned and (at least partly) re-applied to Teams to update them. 
 
-At the time of this writing, there are a number of caveats to cloning; these have been documented (along with work-arounds) by [Laura Kokkarinen]() in her excellent blog series [Cloning Teams and Configuring Tabs](https://laurakokkarinen.com/cloning-teams-and-configuring-tabs-via-microsoft-graph-prelude/). This project doesn't include the work-arounds, and may be of limited use for cloning until the work-arounds are added or made unnecessary through product improvements.
+At the time of this writing, there are a number of caveats to cloning; these have been documented (along with work-arounds) by [Laura Kokkarinen](https://laurakokkarinen.com/) in her excellent blog series [Cloning Teams and Configuring Tabs](https://laurakokkarinen.com/cloning-teams-and-configuring-tabs-via-microsoft-graph-prelude/). This project doesn't include the work-arounds, and may be of limited use for cloning until the work-arounds are added or made unnecessary through product improvements.
 
 Instead, the approach of this project - at least initially - is to make it easy to create new Teams via the Graph API, and specifically to do that using a workflow tool such as Microsoft Flow or Azure Logic Apps.
 
 ## Teams Templates
 
-Some of the documentation refers to the "master" Team that is cloned as a "template." There are also some [built-in templates for education, retail, and healthcare](https://developer.microsoft.com/en-us/office/blogs/deliver-a-consistent-repeatable-microsoft-teams-experience-with-the-launch-of-templates/); these are available out of the box. 
+Some people call the "master" Team that is meant for cloning a "template." There are also some [built-in templates for education, retail, and healthcare](https://developer.microsoft.com/en-us/office/blogs/deliver-a-consistent-repeatable-microsoft-teams-experience-with-the-launch-of-templates/); these are available out of the box.
 
 I like to think of the Create Team call's [lovely JSON structure](https://docs.microsoft.com/en-us/graph/api/team-post?view=graph-rest-beta#request-2) as a template too, even though the documentation calls it a "team object" or "[team resource type](https://docs.microsoft.com/en-us/graph/api/resources/team?view=graph-rest-beta)." In this solution, this same JSON is stored in files in a SharePoint library. 
 
@@ -38,11 +38,11 @@ Architectural goals were:
 
 ![Solution Architecture](./images/SolutionArchitecture.png)
 
-As shown in the diagram, Team provisioning is initiated through a PowerApp or Flow - or really any program. A Team is provisioned by placing a message on the Create Clone Request Queue. For example, to request a creation, this JSON is placed in the queue:
+As shown in the diagram, Team provisioning is initiated through a PowerApp or Flow - or really any program. A Team is provisioned by placing a message on the Create Team Request Queue or Clone Team Request Queue. For example, to request a creation, this JSON is placed in the queue:
 
 ~~~JSON
 {
-  "requestId": 9999,
+  "requestId": "9999",
   "displayName": "My Team",
   "description": "Something new",
   "owner": "someone@mytenant.onmicrosoft.com",
@@ -52,7 +52,7 @@ As shown in the diagram, Team provisioning is initiated through a PowerApp or Fl
 
 This will trigger an Azure function which reads the template JSON from SharePoint and merges in the specified displayName, description, and owner, and then creates the Team.
 
-When the Team is created (or has failed for some reason), the Azure Function places a response on the Create or Clone Team Completion Queue. This message includes the new Team ID and some other information. Notably, it includes the orginal Request ID, which the two Flows can use to correlate which request they're talking about. For example, the Request ID could contain the ID of an item in a SharePoint list that represents the new Team request; the 2nd Flow can then easily read the SharePoint list item to get all the context it needs to complete its work.
+When the Team is created (or has failed for some reason), the Azure Function places a response on the Create Team Completion Queue or Clone Team Completion Queue. This message includes the new Team ID and some other information. Notably, it includes the orginal Request ID, which the two Flows can use to correlate which request they're talking about. For example, the Request ID could contain the ID of an item in a SharePoint list that represents the new Team request; the 2nd Flow can then easily read the SharePoint list item to get all the context it needs to complete its work.
 
 NOTE: At the time of this writing, the Create Team Graph API call is only capable of provisioning a single Team owner if called with an app identity, so this version only handles a single owner. Additional owners may be supported in the future if the underlying API starts supporting them, or by adding them sequentially to the Team. Also note that the current API for adding owners and members is for the underlying O365 Group, and can take up to 2 hours to propagate to the Team, so it might be best to let the initial Owner add other people manually, which is immediate.
 
