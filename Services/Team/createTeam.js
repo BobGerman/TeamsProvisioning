@@ -67,7 +67,7 @@ module.exports = function createTeam(context, token, templateString) {
             resolve(result.targetResourceId);
           } else {
             // Not success - try again after waiting a few seconds
-            console.log(`Received status ${result.status}`);
+            context.log(`Received status ${result.status}`);
             setTimeout(() => {
               pollUntilDone(resolve, reject, opUrl, token, retryCount - 1);
             }, RETRY_TIME_MSEC);
@@ -76,7 +76,7 @@ module.exports = function createTeam(context, token, templateString) {
           context.log('Received error ' + error);
           reject(error);
         } else {
-          console.log(`Received status ${result.status}`);
+          context.log(`Retry after error`);
           setTimeout(() => {
             pollUntilDone(resolve, reject, opUrl, token, retryCount - 1);
           }, RETRY_TIME_MSEC);
