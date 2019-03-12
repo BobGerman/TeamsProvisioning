@@ -76,11 +76,16 @@ module.exports = function createTeam(context, token, templateString) {
           context.log('Received error ' + error);
           reject(error);
         } else {
-          context.log(`Invalid response ${response.statusCode}`);
-          reject(`Invalid response ${response.statusCode}`);
+          console.log(`Received status ${result.status}`);
+          setTimeout(() => {
+            pollUntilDone(resolve, reject, opUrl, token, retryCount - 1);
+          }, RETRY_TIME_MSEC);
         }
 
       });
+    } else {
+      context.log('Completion retry count exceeded');
+      reject('Completion retry count exceeded');
     }
   }
 }
