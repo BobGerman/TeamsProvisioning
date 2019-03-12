@@ -1,6 +1,6 @@
 # Teams Provisioning Sample
 
-## Solution Overview
+## Part 1: Solution Overview
 
 Collaborative workspaces are a lot more useful if they're consistent and easy to navigate; this is true of SharePoint, Microsoft Teams, and really any product that has the concept of a workspace. A widely accepted approach is to establish categories of workspaces for use within an enterprise, such as for a department, project, or community of practice. Each category has:
 
