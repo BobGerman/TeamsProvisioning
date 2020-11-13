@@ -20,7 +20,7 @@ To set up the solution, you will need to be a full administrator of:
 
 * Office 365 Tenant and associated Azure AD
 * Microsoft Azure subscription associated with the same Azure AD directory as the Office 365 Tenant
-* Computer running PowerShell 5.x and [AzureRM PowerShell](https://docs.microsoft.com/en-us/powershell/azure/azurerm/install-azurerm-ps)
+* Computer running PowerShell 5.x and [AzureRM PowerShell](https://docs.microsoft.com/powershell/azure/azurerm/install-azurerm-ps?WT.mc_id=m365-0000-rogerman)
 
 ## Solution
 
